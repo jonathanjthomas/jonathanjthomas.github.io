@@ -7,7 +7,6 @@ permalink: /blog/:year/:month/:day/:title
 #for RSS Feed
 plugins:
   - jekyll-feed
-title: Jonathan John Thomas
 description: Welcome to my Profile!
 author: Jonathan John Thomas
 
