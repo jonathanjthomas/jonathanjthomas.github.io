@@ -3,6 +3,14 @@ layout: post
 title: "The Power Of A Smile"
 date: 2022-09-29
 ---
+<style>
+ iframe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+ }
+</style>
 
  <iframe width="560" height="315"
 src="https://www.youtube.com/embed/G8B6-vyp86g" 
