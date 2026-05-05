@@ -4,6 +4,7 @@
  */
 
 import gsap from 'gsap'
+import type { RefObject } from 'react'
 import * as THREE from 'three'
 
 interface ScrollTimelineOptions {
@@ -12,13 +13,12 @@ interface ScrollTimelineOptions {
   end?: string
   scrub?: boolean | number
   markers?: boolean
-  offset?: number
 }
 
 /**
  * Create a scroll-driven timeline for hero section exit
  */
-export function createHeroExitTimeline(ref: React.RefObject<HTMLDivElement>) {
+export function createHeroExitTimeline(ref: RefObject<HTMLDivElement>) {
   if (!ref.current) return null
 
   return gsap.timeline({
@@ -155,22 +155,36 @@ export function createScaleAnimation(
 
   // Handle Three.js objects differently
   if ((element as any).scale) {
-    return gsap.to((element as any).scale, {
-      x: toScale,
-      y: toScale,
-      z: toScale,
-      duration,
-      ease,
-    })
+    return gsap.fromTo(
+      (element as any).scale,
+      {
+        x: fromScale,
+        y: fromScale,
+        z: fromScale,
+      },
+      {
+        x: toScale,
+        y: toScale,
+        z: toScale,
+        duration,
+        ease,
+      }
+    )
   }
 
   // Handle DOM elements
-  return gsap.to(element, {
-    scale: toScale,
-    duration,
-    ease,
-  })
-}
+  return gsap.fromTo(
+    element,
+    {
+      scale: fromScale,
+    },
+    {
+      scale: toScale,
+      duration,
+      ease,
+    }
+  )
+  }
 
 /**
  * Create a rotation animation for 3D objects
@@ -185,12 +199,22 @@ export function createRotationAnimation(
 ) {
   if (!obj) return null
 
-  return gsap.to(obj.rotation, {
-    ...toRotation,
-    duration,
-    repeat,
-    ease,
-  })
+  return gsap.fromTo(
+    obj.rotation,
+    {
+      x: fromRotation.x,
+      y: fromRotation.y,
+      z: fromRotation.z,
+    },
+    {
+      x: toRotation.x,
+      y: toRotation.y,
+      z: toRotation.z,
+      duration,
+      repeat,
+      ease,
+    }
+  )
 }
 
 /**
