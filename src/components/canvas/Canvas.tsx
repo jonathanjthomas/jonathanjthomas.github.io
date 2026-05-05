@@ -15,6 +15,7 @@
 import { Canvas as R3FCanvas, useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
 import { useStore } from '@/lib/store'
+import { setSceneInvalidate } from '@/lib/sceneRefs'
 import { Scene } from './Scene'
 
 /**
@@ -22,7 +23,7 @@ import { Scene } from './Scene'
  * Initializes camera and mounts Scene
  */
 function CanvasContent() {
-  const { camera, gl } = useThree()
+  const { camera, gl, invalidate } = useThree()
 
   useEffect(() => {
     // Initialize camera for hero section
@@ -35,7 +36,13 @@ function CanvasContent() {
       console.log(`  DPR: ${gl.getPixelRatio().toFixed(2)}`)
       console.log(`  Renderer: ${gl.info.render.frame}`)
     }
-  }, [camera, gl])
+
+    setSceneInvalidate(invalidate)
+
+    return () => {
+      setSceneInvalidate(null)
+    }
+  }, [camera, gl, invalidate])
 
   return <Scene />
 }
