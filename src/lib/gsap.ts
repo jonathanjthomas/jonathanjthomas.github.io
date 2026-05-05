@@ -13,12 +13,8 @@ gsap.registerPlugin(ScrollTrigger)
  * Configure GSAP defaults for portfolio animations
  */
 export function initializeGSAP() {
-  gsap.config({
-    nullTargetAction: 'ignore',
-    autoSleep: 60,
-  })
-
-  // ScrollTrigger defaults
+  // GSAP configuration (minimal setup)
+  // ScrollTrigger will be configured below
   ScrollTrigger.defaults({
     // scrub: true enables smooth sync with scrollbar
     // ease: 'none' ensures linear interpolation
@@ -47,7 +43,7 @@ export function createScrollTimeline(
       start: 'top top',
       end: 'bottom top',
       scrub: true,
-      ease: 'none',
+      markers: false,
       ...options,
     },
   })

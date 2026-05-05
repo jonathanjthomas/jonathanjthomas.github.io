@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description:
     'Interactive 3D portfolio showcasing projects, publications, and experience in AI and machine learning.',
   keywords: 'machine learning, AI, research, portfolio, 3D',
-  author: 'Jonathan Thomas',
+  authors: [{ name: 'Jonathan Thomas' }],
   openGraph: {
     title: 'Jonathan Thomas | ML Engineer & AI Researcher',
     description:
