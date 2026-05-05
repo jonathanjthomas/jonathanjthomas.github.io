@@ -1,0 +1,9 @@
+/**
+ * Canvas Components - Barrel Exports
+ * Simplifies imports across the application
+ */
+
+export { Canvas } from './Canvas'
+export { Scene } from './Scene'
+export { CameraRig, useAnimateCamera } from './CameraRig'
+export { Lights } from './Lights'

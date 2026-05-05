@@ -6,15 +6,9 @@
  * Sections have id attributes for smooth scrolling
  */
 
-import { Canvas } from '@/components/canvas/Canvas'
-import { Hero } from '@/components/sections/Hero'
-import { Experience } from '@/components/sections/Experience'
-import { Education } from '@/components/sections/Education'
-import { Publications } from '@/components/sections/Publications'
-import { Projects } from '@/components/sections/Projects'
-import { Footer } from '@/components/sections/Footer'
-import { Sidebar } from '@/components/ui/Sidebar'
-import { Loader } from '@/components/ui/Loader'
+import { Canvas } from '@/components/canvas'
+import { Hero, Experience, Education, Publications, Projects, Footer } from '@/components/sections'
+import { Sidebar, Loader } from '@/components/ui'
 import { useEffect } from 'react'
 import { initializeGSAP, cleanupScrollTriggers } from '@/lib/gsap'
 import { useStore } from '@/lib/store'
