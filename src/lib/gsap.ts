@@ -1,4 +1,3 @@
-gsap.registerPlugin(ScrollTrigger)
 /**
  * GSAP setup and ScrollTrigger configuration
  * Centralized animation orchestration for the portfolio.
