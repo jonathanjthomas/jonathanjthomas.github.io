@@ -20,6 +20,7 @@ import { CameraRig } from './CameraRig'
 import { useScrollSync } from '@/lib/scrollSync'
 import { HeroScene } from './HeroScene'
 import { ExperienceScene } from './ExperienceScene'
+import { EducationScene } from './EducationScene'
 
 export function Scene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null)
@@ -72,6 +73,9 @@ export function Scene() {
 
       {/* Experience 3D content */}
       <ExperienceScene />
+
+      {/* Education 3D content */}
+      <EducationScene />
 
       {/* Will be populated in Phase 4+ */}
       {/* Hero avatar, Experience path, Education geometry, etc. */}
