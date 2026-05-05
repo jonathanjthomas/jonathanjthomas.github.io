@@ -1,39 +1,46 @@
+gsap.registerPlugin(ScrollTrigger)
 /**
  * GSAP setup and ScrollTrigger configuration
- * Centralized animation orchestration
+ * Centralized animation orchestration for the portfolio.
  */
 
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+
+let isInitialized = false
 
 /**
- * Configure GSAP defaults for portfolio animations
+ * Configure GSAP defaults for portfolio animations.
+ * Safe to call more than once, but only initializes once.
  */
 export function initializeGSAP() {
-  // GSAP configuration (minimal setup)
-  // ScrollTrigger will be configured below
+  if (isInitialized) return
+
+  ScrollTrigger.config({
+    limitCallbacks: true,
+    ignoreMobileResize: true,
+  })
+
   ScrollTrigger.defaults({
-    // scrub: true enables smooth sync with scrollbar
-    // ease: 'none' ensures linear interpolation
     markers: process.env.NODE_ENV === 'development',
   })
 
+  isInitialized = true
+
   if (process.env.NODE_ENV === 'development') {
-    console.log('✓ GSAP initialized with ScrollTrigger')
+    console.log('✓ GSAP initialized with ScrollTrigger and ScrollToPlugin')
   }
 }
 
 /**
- * Create a scroll-driven timeline for a section
- * @param trigger - DOM element to trigger animation
- * @param options - ScrollTrigger options
+ * Create a scroll-driven timeline for a section.
  */
 export function createScrollTimeline(
   trigger: HTMLElement | null,
-  options?: Partial<ScrollTrigger.StaticVars>
+  options: ScrollTrigger.Vars = {}
 ) {
   if (!trigger) return null
 
@@ -50,10 +57,24 @@ export function createScrollTimeline(
 }
 
 /**
- * Stagger animation helper for card reveals
- * @param targets - DOM elements or selectors
- * @param duration - animation duration in seconds
- * @param staggerDelay - delay between each element
+ * Create a one-off ScrollTrigger for section state syncing.
+ */
+export function createSectionTrigger(
+  trigger: HTMLElement,
+  onEnter: () => void,
+  onEnterBack?: () => void
+) {
+  return ScrollTrigger.create({
+    trigger,
+    start: 'top center',
+    end: 'bottom center',
+    onEnter,
+    onEnterBack: onEnterBack ?? onEnter,
+  })
+}
+
+/**
+ * Stagger animation helper for card reveals.
  */
 export function staggerReveal(
   targets: gsap.TweenTarget,
@@ -74,30 +95,31 @@ export function staggerReveal(
 }
 
 /**
- * Kill all ScrollTrigger instances
- * Useful for cleanup during hot reload or navigation
+ * Kill all ScrollTrigger instances.
  */
 export function cleanupScrollTriggers() {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 }
 
 /**
- * Refresh ScrollTrigger calculations
- * Call after DOM changes or window resize
+ * Refresh ScrollTrigger calculations.
  */
 export function refreshScrollTriggers() {
   ScrollTrigger.refresh()
 }
 
 /**
- * Navigate to a section with smooth scroll
- * @param element - Target element to scroll to
+ * Navigate to a section with smooth scroll.
  */
 export function scrollToSection(element: HTMLElement | null) {
   if (!element) return
 
   gsap.to(window, {
-    scrollTo: element,
+    scrollTo: {
+      y: element,
+      offsetY: 0,
+      autoKill: true,
+    },
     duration: 1,
     ease: 'power2.inOut',
   })

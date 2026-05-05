@@ -12,9 +12,12 @@ import { Sidebar, Loader } from '@/components/ui'
 import { useEffect } from 'react'
 import { initializeGSAP, cleanupScrollTriggers } from '@/lib/gsap'
 import { useStore } from '@/lib/store'
+import { useSectionScrollSpy } from '@/lib/scrollSpy'
 
 export default function Home() {
   const setAssetsLoaded = useStore((state) => state.setAssetsLoaded)
+
+  useSectionScrollSpy()
 
   useEffect(() => {
     // Initialize GSAP
