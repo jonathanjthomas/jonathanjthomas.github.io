@@ -19,6 +19,7 @@
 import { useThree } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import { setSceneCamera } from '@/lib/sceneRefs'
 
 export function CameraRig() {
   const { camera } = useThree()
@@ -26,6 +27,12 @@ export function CameraRig() {
 
   useEffect(() => {
     cameraRef.current = camera as THREE.PerspectiveCamera
+
+    setSceneCamera(cameraRef.current)
+
+    return () => {
+      setSceneCamera(null)
+    }
   }, [camera])
 
   return null

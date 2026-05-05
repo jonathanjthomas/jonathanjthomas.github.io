@@ -18,6 +18,7 @@ import { useStore } from '@/lib/store'
 import { Lights } from './Lights'
 import { CameraRig } from './CameraRig'
 import { useScrollSync } from '@/lib/scrollSync'
+import { HeroScene } from './HeroScene'
 
 export function Scene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null)
@@ -64,6 +65,10 @@ export function Scene() {
       {/* Camera Rig - Animation Controller */}
       {/* Handles GSAP scroll-driven animations and imperative updates */}
       <CameraRig />
+
+      {/* Hero 3D content */}
+      <HeroScene />
+
       {/* Will be populated in Phase 4+ */}
       {/* Hero avatar, Experience path, Education geometry, etc. */}
 
