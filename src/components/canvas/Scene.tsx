@@ -17,11 +17,15 @@ import * as THREE from 'three'
 import { useStore } from '@/lib/store'
 import { Lights } from './Lights'
 import { CameraRig } from './CameraRig'
+import { useScrollSync } from '@/lib/scrollSync'
 
 export function Scene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null)
   const sceneRef = useRef<THREE.Scene>(null)
   const setIsCanvasReady = useStore((state) => state.setIsCanvasReady)
+
+  // Enable canvas re-render during scroll for smooth animations
+  useScrollSync()
 
   useEffect(() => {
     // Signal that canvas/scene is ready for animations
@@ -32,6 +36,7 @@ export function Scene() {
       console.log('✓ Scene orchestrator initialized')
       console.log('  Camera ready for GSAP control')
       console.log('  Lights configured for all sections')
+      console.log('  Scroll sync enabled')
     }
 
     return () => {
