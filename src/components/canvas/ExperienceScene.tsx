@@ -15,6 +15,7 @@ export function ExperienceScene() {
 
   const setHoveredExperience = useStore((state) => state.setHoveredExperience)
   const setIsInteracting = useStore((state) => state.setIsInteracting)
+  const activeSection = useStore((state) => state.activeSection)
   const expandedExperience = useStore((state) => state.expandedExperience)
   const hoveredExperience = useStore((state) => state.hoveredExperience)
 
@@ -39,6 +40,8 @@ export function ExperienceScene() {
   }, [expandedExperience, hoveredExperience])
 
   useFrame(({ raycaster, camera, pointer }) => {
+    if (activeSection !== 'experience') return
+
     if (!hitObjectsRef.current.length) return
 
     raycaster.setFromCamera(pointer, camera)
@@ -74,7 +77,7 @@ export function ExperienceScene() {
   }, [setHoveredExperience, setIsInteracting])
 
   return (
-    <group name="experience-scene">
+    <group name="experience-scene" visible={activeSection === 'experience'}>
       <mesh geometry={tubeGeometry} position={[0, 0, 0]}>
         <meshStandardMaterial color="#2563eb" roughness={0.45} metalness={0.2} opacity={0.85} transparent />
       </mesh>
