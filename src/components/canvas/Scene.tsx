@@ -22,6 +22,7 @@ import { HeroScene } from './HeroScene'
 import { ExperienceScene } from './ExperienceScene'
 import { EducationScene } from './EducationScene'
 import { PublicationsScene } from './PublicationsScene'
+import { ProjectsScene } from './ProjectsScene'
 
 export function Scene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null)
@@ -80,6 +81,9 @@ export function Scene() {
 
       {/* Publications 3D content */}
       <PublicationsScene />
+
+      {/* Projects 3D content */}
+      <ProjectsScene />
 
       {/* Will be populated in Phase 4+ */}
       {/* Hero avatar, Experience path, Education geometry, etc. */}
