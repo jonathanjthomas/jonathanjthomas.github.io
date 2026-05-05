@@ -16,33 +16,17 @@
  * gsap.to(cameraRef.current.rotation, { x, y, z, duration })
  */
 
-import { useThree, useFrame } from '@react-three/fiber'
-import { useEffect, useRef, useMemo } from 'react'
+import { useThree } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { useStore } from '@/lib/store'
 
 export function CameraRig() {
   const { camera } = useThree()
   const cameraRef = useRef<THREE.PerspectiveCamera>(camera as THREE.PerspectiveCamera)
-  const quaternionRef = useRef(new THREE.Quaternion())
-  const targetQuaternionRef = useRef(new THREE.Quaternion())
-
-  // Memoize camera for consistent reference
-  const memoizedCamera = useMemo(() => camera as THREE.PerspectiveCamera, [camera])
 
   useEffect(() => {
-    cameraRef.current = memoizedCamera
-  }, [memoizedCamera])
-
-  // Minimal frame update - only for quaternion interpolation
-  // GSAP handles position animation separately
-  useFrame(() => {
-    // Smooth quaternion interpolation for rotation
-    if (quaternionRef.current && targetQuaternionRef.current) {
-      quaternionRef.current.slerp(targetQuaternionRef.current, 0.05)
-      cameraRef.current.quaternion.copy(quaternionRef.current)
-    }
-  })
+    cameraRef.current = camera as THREE.PerspectiveCamera
+  }, [camera])
 
   return null
 }
@@ -63,8 +47,8 @@ export function useAnimateCamera() {
       lookAt: THREE.Vector3 = new THREE.Vector3(0, 0, 0),
       duration: number = 1
     ) => {
-      // Handled by GSAP in scroll timelines
-      // This is a backup for imperative animations
+      // Handled by GSAP in scroll timelines.
+      // This returns useful camera transition values for future timeline wiring.
       const startPos = camera.position.clone()
       const startQuat = camera.quaternion.clone()
 
