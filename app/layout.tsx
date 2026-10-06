@@ -27,11 +27,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&family=Space+Grotesk:wght@700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=BBH+Bartle&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-black text-neutral-100 min-h-screen flex flex-col justify-center items-center antialiased select-none">
+      <body className="bg-black text-neutral-100 min-h-screen flex flex-col justify-center items-center antialiased select-none overflow-x-hidden">
         {children}
       </body>
     </html>

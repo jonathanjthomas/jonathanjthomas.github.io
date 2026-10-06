@@ -6,56 +6,89 @@ export default function AnimatedEyes() {
   return (
     <div
       className="relative flex items-center justify-center py-6 px-4"
-      aria-label="Animated tall oval eyes looking around and blinking"
+      aria-label="Animated cartoon tall oval eyes looking around with shuttering eyelids"
     >
       <style>{`
-        /* Eyes start default CLOSED (completely invisible/black) and open after a suspenseful pause */
-        @keyframes tall-eyelid-cycle {
+        /* UPPER EYELID SHUTTER: Starts default CLOSED at translateY(0), shutters open, blinks, and shutters closed */
+        @keyframes upper-shutter {
           0%, 14% {
-            /* Default closed: 100% black and hidden */
-            transform: scaleY(0);
-            opacity: 0;
+            /* Default closed: fully covers upper & middle eye */
+            transform: translateY(0px);
           }
-          19% {
-            /* Open wide */
-            transform: scaleY(1);
-            opacity: 1;
+          20% {
+            /* Fully open: retracted above eye */
+            transform: translateY(-120px);
           }
           77% {
             /* Stay open */
-            transform: scaleY(1);
-            opacity: 1;
+            transform: translateY(-120px);
           }
-          79.5% {
-            /* Quick natural blink */
-            transform: scaleY(0);
-            opacity: 0;
-          }
+          /* Quick natural blink */
           82% {
+            transform: translateY(-120px);
+          }
+          83.5% {
+            /* Snap shut */
+            transform: translateY(0px);
+          }
+          85% {
             /* Snap back open */
-            transform: scaleY(1);
-            opacity: 1;
+            transform: translateY(-120px);
           }
-          86% {
-            /* Start closing */
-            transform: scaleY(1);
-            opacity: 1;
+          89% {
+            /* Stay open briefly */
+            transform: translateY(-120px);
           }
-          90%, 100% {
-            /* Completely closed and pure black */
-            transform: scaleY(0);
-            opacity: 0;
+          94%, 100% {
+            /* Smoothly shutter closed down over the eye */
+            transform: translateY(0px);
           }
         }
 
-        /* Pupil glance motion: centers -> looks left -> centers -> looks right -> centers */
+        /* LOWER EYELID SHUTTER: Starts default CLOSED at translateY(0), shutters open, blinks, and shutters closed */
+        @keyframes lower-shutter {
+          0%, 14% {
+            /* Default closed: fully covers lower & middle eye */
+            transform: translateY(0px);
+          }
+          20% {
+            /* Fully open: retracted below eye */
+            transform: translateY(65px);
+          }
+          77% {
+            /* Stay open */
+            transform: translateY(65px);
+          }
+          /* Quick natural blink */
+          82% {
+            transform: translateY(65px);
+          }
+          83.5% {
+            /* Snap shut */
+            transform: translateY(0px);
+          }
+          85% {
+            /* Snap back open */
+            transform: translateY(65px);
+          }
+          89% {
+            /* Stay open briefly */
+            transform: translateY(65px);
+          }
+          94%, 100% {
+            /* Smoothly shutter closed up over the eye */
+            transform: translateY(0px);
+          }
+        }
+
+        /* PUPIL GLANCE MOTION: looks left (matching reference) -> centers -> looks right -> centers */
         @keyframes tall-pupil-glance {
           0%, 20% {
-            /* Centered during opening */
+            /* Centered while opening */
             transform: translate(0, 0);
           }
           26%, 42% {
-            /* Look Left (matching reference picture 3) */
+            /* Look Left (matching reference picture) */
             transform: translate(-15px, 0);
           }
           47%, 54% {
@@ -72,24 +105,30 @@ export default function AnimatedEyes() {
           }
         }
 
-        .tall-eye-lid {
-          transform-origin: 50% 50%;
-          animation: tall-eyelid-cycle 9.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        .eyelid-upper {
+          animation: upper-shutter 9.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          will-change: transform;
+        }
+
+        .eyelid-lower {
+          animation: lower-shutter 9.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          will-change: transform;
         }
 
         .tall-pupil {
           transform-origin: 38px 65px;
           animation: tall-pupil-glance 9.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+          will-change: transform;
         }
       `}</style>
 
       {/* Responsive container for both eyes */}
-      <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
+      <div className="flex items-center gap-5 sm:gap-7 md:gap-9">
         {/* Left Eye */}
-        <div className="tall-eye-lid w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center">
+        <div className="w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center overflow-visible">
           <svg
             viewBox="0 0 76 130"
-            className="w-full h-full overflow-visible drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
+            className="w-full h-full overflow-hidden"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -99,17 +138,18 @@ export default function AnimatedEyes() {
               </clipPath>
             </defs>
 
-            {/* Sclera (Tall white oval) */}
-            <ellipse
-              cx="38"
-              cy="65"
-              rx="34"
-              ry="60"
-              fill="#ffffff"
-            />
-
-            {/* Clipped Pupil & Glint */}
+            {/* Everything inside the eye is clipped to the tall oval boundary */}
             <g clipPath="url(#tall-eye-clip-left)">
+              {/* Sclera (White base) */}
+              <ellipse
+                cx="38"
+                cy="65"
+                rx="34"
+                ry="60"
+                fill="#ffffff"
+              />
+
+              {/* Pupil & Glint group */}
               <g className="tall-pupil">
                 {/* Tall oval black pupil */}
                 <ellipse
@@ -119,7 +159,7 @@ export default function AnimatedEyes() {
                   ry="37"
                   fill="#000000"
                 />
-                {/* White glint in upper-left of pupil (per reference) */}
+                {/* White glint highlight in upper-left (per reference) */}
                 <ellipse
                   cx="31"
                   cy="51"
@@ -128,6 +168,20 @@ export default function AnimatedEyes() {
                   fill="#ffffff"
                 />
               </g>
+
+              {/* Pure black Upper Eyelid shutter (descends over eye) */}
+              <path
+                d="M -10 -20 L 86 -20 L 86 85 C 60 96, 16 96, -10 85 Z"
+                fill="#000000"
+                className="eyelid-upper"
+              />
+
+              {/* Pure black Lower Eyelid shutter (ascends over eye) */}
+              <path
+                d="M -10 145 L 86 145 L 86 75 C 60 64, 16 64, -10 75 Z"
+                fill="#000000"
+                className="eyelid-lower"
+              />
             </g>
 
             {/* Crisp outer border contour */}
@@ -144,10 +198,10 @@ export default function AnimatedEyes() {
         </div>
 
         {/* Right Eye */}
-        <div className="tall-eye-lid w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center">
+        <div className="w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center overflow-visible">
           <svg
             viewBox="0 0 76 130"
-            className="w-full h-full overflow-visible drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
+            className="w-full h-full overflow-hidden"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -157,17 +211,18 @@ export default function AnimatedEyes() {
               </clipPath>
             </defs>
 
-            {/* Sclera (Tall white oval) */}
-            <ellipse
-              cx="38"
-              cy="65"
-              rx="34"
-              ry="60"
-              fill="#ffffff"
-            />
-
-            {/* Clipped Pupil & Glint */}
+            {/* Everything inside the eye is clipped to the tall oval boundary */}
             <g clipPath="url(#tall-eye-clip-right)">
+              {/* Sclera (White base) */}
+              <ellipse
+                cx="38"
+                cy="65"
+                rx="34"
+                ry="60"
+                fill="#ffffff"
+              />
+
+              {/* Pupil & Glint group */}
               <g className="tall-pupil">
                 {/* Tall oval black pupil */}
                 <ellipse
@@ -177,7 +232,7 @@ export default function AnimatedEyes() {
                   ry="37"
                   fill="#000000"
                 />
-                {/* White glint in upper-left of pupil (per reference) */}
+                {/* White glint highlight in upper-left (per reference) */}
                 <ellipse
                   cx="31"
                   cy="51"
@@ -186,6 +241,20 @@ export default function AnimatedEyes() {
                   fill="#ffffff"
                 />
               </g>
+
+              {/* Pure black Upper Eyelid shutter (descends over eye) */}
+              <path
+                d="M -10 -20 L 86 -20 L 86 85 C 60 96, 16 96, -10 85 Z"
+                fill="#000000"
+                className="eyelid-upper"
+              />
+
+              {/* Pure black Lower Eyelid shutter (ascends over eye) */}
+              <path
+                d="M -10 145 L 86 145 L 86 75 C 60 64, 16 64, -10 75 Z"
+                fill="#000000"
+                className="eyelid-lower"
+              />
             </g>
 
             {/* Crisp outer border contour */}
