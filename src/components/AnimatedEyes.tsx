@@ -4,181 +4,199 @@ import React from "react";
 
 export default function AnimatedEyes() {
   return (
-    <div className="relative flex items-center justify-center p-4" aria-label="Animated blinking eyes">
-      {/* Scoped CSS animations for the eyes */}
+    <div
+      className="relative flex items-center justify-center py-6 px-4"
+      aria-label="Animated tall oval eyes looking around and blinking"
+    >
       <style>{`
-        @keyframes pupil-glance {
-          0%, 16% {
-            transform: translate(0, 0);
+        /* Eyes start default CLOSED (completely invisible/black) and open after a suspenseful pause */
+        @keyframes tall-eyelid-cycle {
+          0%, 14% {
+            /* Default closed: 100% black and hidden */
+            transform: scaleY(0);
+            opacity: 0;
           }
-          22%, 36% {
-            /* Look Left */
-            transform: translate(-12px, -1px);
-          }
-          42%, 48% {
-            /* Return to Center */
-            transform: translate(0, 0);
-          }
-          54%, 68% {
-            /* Look Right */
-            transform: translate(12px, -1px);
-          }
-          74%, 80% {
-            /* Center */
-            transform: translate(0, 0);
-          }
-          84%, 100% {
-            transform: translate(0, 0);
-          }
-        }
-
-        @keyframes eyelid-blink {
-          0%, 74% {
+          19% {
+            /* Open wide */
             transform: scaleY(1);
-          }
-          /* Quick natural blink */
-          76.5% {
-            transform: scaleY(0.06);
-          }
-          79% {
-            transform: scaleY(1);
-          }
-          /* Stay open briefly */
-          82% {
-            transform: scaleY(1);
-          }
-          /* Smoothly close eyes */
-          86% {
-            transform: scaleY(0.04);
-          }
-          /* Held closed */
-          94% {
-            transform: scaleY(0.04);
-          }
-          /* Wake up and reopen */
-          98%, 100% {
-            transform: scaleY(1);
-          }
-        }
-
-        @keyframes atmospheric-pulse {
-          0%, 100% {
-            opacity: 0.85;
-            filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.15));
-          }
-          50% {
             opacity: 1;
-            filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.3));
+          }
+          77% {
+            /* Stay open */
+            transform: scaleY(1);
+            opacity: 1;
+          }
+          79.5% {
+            /* Quick natural blink */
+            transform: scaleY(0);
+            opacity: 0;
+          }
+          82% {
+            /* Snap back open */
+            transform: scaleY(1);
+            opacity: 1;
+          }
+          86% {
+            /* Start closing */
+            transform: scaleY(1);
+            opacity: 1;
+          }
+          90%, 100% {
+            /* Completely closed and pure black */
+            transform: scaleY(0);
+            opacity: 0;
           }
         }
 
-        .eyes-container {
-          animation: atmospheric-pulse 6s ease-in-out infinite;
+        /* Pupil glance motion: centers -> looks left -> centers -> looks right -> centers */
+        @keyframes tall-pupil-glance {
+          0%, 20% {
+            /* Centered during opening */
+            transform: translate(0, 0);
+          }
+          26%, 42% {
+            /* Look Left (matching reference picture 3) */
+            transform: translate(-15px, 0);
+          }
+          47%, 54% {
+            /* Return Center */
+            transform: translate(0, 0);
+          }
+          60%, 74% {
+            /* Look Right */
+            transform: translate(15px, 0);
+          }
+          79%, 100% {
+            /* Return Center */
+            transform: translate(0, 0);
+          }
         }
 
-        .eye-lid {
+        .tall-eye-lid {
           transform-origin: 50% 50%;
-          animation: eyelid-blink 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          animation: tall-eyelid-cycle 9.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        .eye-pupil {
-          animation: pupil-glance 9s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+        .tall-pupil {
+          transform-origin: 38px 65px;
+          animation: tall-pupil-glance 9.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
         }
       `}</style>
 
-      <div className="eyes-container flex items-center gap-7">
+      {/* Responsive container for both eyes */}
+      <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
         {/* Left Eye */}
-        <div className="eye-lid relative w-20 h-12 flex items-center justify-center">
+        <div className="tall-eye-lid w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center">
           <svg
-            viewBox="0 0 80 48"
-            className="w-full h-full overflow-visible"
+            viewBox="0 0 76 130"
+            className="w-full h-full overflow-visible drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <clipPath id="left-eye-clip">
-                {/* Modern organic almond eye shape */}
-                <path d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z" />
+              {/* Tall vertical oval clipping mask */}
+              <clipPath id="tall-eye-clip-left">
+                <ellipse cx="38" cy="65" rx="34" ry="60" />
               </clipPath>
-              <radialGradient id="iris-gradient-left" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#222" />
-                <stop offset="70%" stopColor="#0a0a0a" />
-                <stop offset="100%" stopColor="#000000" />
-              </radialGradient>
             </defs>
 
-            {/* Sclera (White of the eye) */}
-            <path
-              d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z"
-              fill="#f5f5f7"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
+            {/* Sclera (Tall white oval) */}
+            <ellipse
+              cx="38"
+              cy="65"
+              rx="34"
+              ry="60"
+              fill="#ffffff"
             />
 
             {/* Clipped Pupil & Glint */}
-            <g clipPath="url(#left-eye-clip)">
-              <g className="eye-pupil" style={{ transformOrigin: "40px 24px" }}>
-                {/* Pupil */}
-                <circle cx="40" cy="24" r="11" fill="url(#iris-gradient-left)" />
-                {/* Glint / Light reflection highlight */}
-                <circle cx="37" cy="20.5" r="3" fill="#ffffff" opacity="0.95" />
-                <circle cx="43" cy="26" r="1.2" fill="#ffffff" opacity="0.6" />
+            <g clipPath="url(#tall-eye-clip-left)">
+              <g className="tall-pupil">
+                {/* Tall oval black pupil */}
+                <ellipse
+                  cx="38"
+                  cy="65"
+                  rx="19"
+                  ry="37"
+                  fill="#000000"
+                />
+                {/* White glint in upper-left of pupil (per reference) */}
+                <ellipse
+                  cx="31"
+                  cy="51"
+                  rx="6.5"
+                  ry="12"
+                  fill="#ffffff"
+                />
               </g>
             </g>
 
-            {/* Eyelash / Outline contour */}
-            <path
-              d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z"
+            {/* Crisp outer border contour */}
+            <ellipse
+              cx="38"
+              cy="65"
+              rx="34"
+              ry="60"
               fill="none"
-              stroke="#0a0a0a"
-              strokeWidth="2.5"
+              stroke="#000000"
+              strokeWidth="4"
             />
           </svg>
         </div>
 
         {/* Right Eye */}
-        <div className="eye-lid relative w-20 h-12 flex items-center justify-center">
+        <div className="tall-eye-lid w-16 h-28 sm:w-20 sm:h-36 md:w-24 md:h-44 flex items-center justify-center">
           <svg
-            viewBox="0 0 80 48"
-            className="w-full h-full overflow-visible"
+            viewBox="0 0 76 130"
+            className="w-full h-full overflow-visible drop-shadow-[0_0_20px_rgba(255,255,255,0.18)]"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <clipPath id="right-eye-clip">
-                {/* Modern organic almond eye shape */}
-                <path d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z" />
+              {/* Tall vertical oval clipping mask */}
+              <clipPath id="tall-eye-clip-right">
+                <ellipse cx="38" cy="65" rx="34" ry="60" />
               </clipPath>
-              <radialGradient id="iris-gradient-right" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#222" />
-                <stop offset="70%" stopColor="#0a0a0a" />
-                <stop offset="100%" stopColor="#000000" />
-              </radialGradient>
             </defs>
 
-            {/* Sclera (White of the eye) */}
-            <path
-              d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z"
-              fill="#f5f5f7"
-              stroke="#e2e8f0"
-              strokeWidth="0.5"
+            {/* Sclera (Tall white oval) */}
+            <ellipse
+              cx="38"
+              cy="65"
+              rx="34"
+              ry="60"
+              fill="#ffffff"
             />
 
             {/* Clipped Pupil & Glint */}
-            <g clipPath="url(#right-eye-clip)">
-              <g className="eye-pupil" style={{ transformOrigin: "40px 24px" }}>
-                {/* Pupil */}
-                <circle cx="40" cy="24" r="11" fill="url(#iris-gradient-right)" />
-                {/* Glint / Light reflection highlight */}
-                <circle cx="37" cy="20.5" r="3" fill="#ffffff" opacity="0.95" />
-                <circle cx="43" cy="26" r="1.2" fill="#ffffff" opacity="0.6" />
+            <g clipPath="url(#tall-eye-clip-right)">
+              <g className="tall-pupil">
+                {/* Tall oval black pupil */}
+                <ellipse
+                  cx="38"
+                  cy="65"
+                  rx="19"
+                  ry="37"
+                  fill="#000000"
+                />
+                {/* White glint in upper-left of pupil (per reference) */}
+                <ellipse
+                  cx="31"
+                  cy="51"
+                  rx="6.5"
+                  ry="12"
+                  fill="#ffffff"
+                />
               </g>
             </g>
 
-            {/* Eyelash / Outline contour */}
-            <path
-              d="M 4 24 C 18 8, 62 8, 76 24 C 62 40, 18 40, 4 24 Z"
+            {/* Crisp outer border contour */}
+            <ellipse
+              cx="38"
+              cy="65"
+              rx="34"
+              ry="60"
               fill="none"
-              stroke="#0a0a0a"
-              strokeWidth="2.5"
+              stroke="#000000"
+              strokeWidth="4"
             />
           </svg>
         </div>
